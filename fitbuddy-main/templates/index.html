@@ -1,0 +1,413 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FitBuddy - AI Fitness Plan Generator</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #172033;
+}
+
+.header {
+    background: linear-gradient(135deg, #172554, #2563eb);
+    color: white;
+    text-align: center;
+    padding: 45px 20px;
+}
+
+.header h1 {
+    font-size: 44px;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 18px;
+}
+
+.container {
+    width: 92%;
+    max-width: 1100px;
+    margin: 35px auto;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+    margin-bottom: 10px;
+}
+
+.description {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    font-weight: bold;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+.success {
+    background: #dcfce7;
+    color: #166534;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.plan-header {
+    background: #172554;
+    color: white;
+    padding: 25px;
+    border-radius: 15px 15px 0 0;
+}
+
+.plan-header p {
+    margin-top: 8px;
+}
+
+.days {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.day {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    border-left: 5px solid #2563eb;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+.day h3 {
+    color: #2563eb;
+    margin-bottom: 10px;
+}
+
+.day h4 {
+    margin-bottom: 8px;
+}
+
+.day p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.tip {
+    background: white;
+    padding: 25px;
+    margin-top: 20px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+
+.tip p {
+    margin-top: 10px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.footer {
+    text-align: center;
+    padding: 30px;
+    color: #64748b;
+}
+
+@media (max-width: 700px) {
+
+    .form-grid,
+    .days {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+
+    .header h1 {
+        font-size: 34px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>FitBuddy</h1>
+
+    <p>
+        AI Fitness Plan Generator using Gemini Models
+    </p>
+
+</div>
+
+
+<div class="container">
+
+
+    <div class="card">
+
+        <h2>Build Your Personalized Fitness Plan</h2>
+
+        <p class="description">
+            Enter your fitness goal and preferred intensity.
+            FitBuddy generates a structured 7-day activity plan
+            together with a nutrition and recovery tip.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <form method="POST" action="/generate">
+
+            <div class="form-grid">
+
+
+                <div class="field">
+
+                    <label>Name</label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter your name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Fitness Goal</label>
+
+                    <select name="goal" required>
+
+                        <option value="general wellness">
+                            General Wellness
+                        </option>
+
+                        <option value="weight loss">
+                            Weight Loss
+                        </option>
+
+                        <option value="muscle gain">
+                            Muscle Gain
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>Workout Intensity</label>
+
+                    <select name="intensity" required>
+
+                        <option value="low">
+                            Low
+                        </option>
+
+                        <option value="medium" selected>
+                            Medium
+                        </option>
+
+                        <option value="high">
+                            High
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label>Feedback or Preferences</label>
+
+                    <textarea
+                        name="feedback"
+                        placeholder="Example: I prefer more walking and recovery days."
+                    ></textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <button type="submit">
+                Generate My 7-Day Plan
+            </button>
+
+
+        </form>
+
+    </div>
+
+
+    {% if message %}
+
+    <div class="success">
+
+        {{ message }}
+
+    </div>
+
+    {% endif %}
+
+
+    {% if plan %}
+
+
+    <div>
+
+        <div class="plan-header">
+
+            <h2>
+                {{ plan.name }}'s FitBuddy Plan
+            </h2>
+
+            <p>
+                Goal: {{ plan.goal }}
+                |
+                Intensity: {{ plan.intensity }}
+            </p>
+
+        </div>
+
+
+        <div class="days">
+
+
+            {% for item in plan.days %}
+
+
+            <div class="day">
+
+                <h3>
+                    {{ item.day }}
+                </h3>
+
+                <h4>
+                    {{ item.focus }}
+                </h4>
+
+                <p>
+                    {{ item.activity }}
+                </p>
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        <div class="tip">
+
+            <h3>
+                Nutrition and Recovery Tip
+            </h3>
+
+            <p>
+                {{ plan.tip }}
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+<div class="footer">
+
+    FitBuddy - AI-powered fitness and wellness assistant
+
+</div>
+
+
+</body>
+</html>
